@@ -1,30 +1,40 @@
 from flask import Flask, render_template
+from apscheduler.schedulers.background import BackgroundScheduler
 import requests
-from database import insert_data_into_database  # Assuming 'database' is a module that contains your SQLAlchemy engine
+from database import insert_data_into_database
 
 app = Flask(__name__)
 
 # Global variable to store the previous timestamp
 previous_timestamp = None
 
-def find_timestamp(data):
+scheduler = BackgroundScheduler()
+
+def extract_timestamp(data):
     """
-    Recursively find and return the timestamp from the data structure.
+    Extract timestamp from data structure.
     """
     timestamp = data.get('timestamp')
+
     if timestamp:
+        print("Extracted Timestamp:", timestamp)
         return timestamp
 
-    for key, value in data.items():
-        if isinstance(value, (dict, list)):
-            result = find_timestamp(value)
+    if isinstance(data, dict):
+        for key, value in data.items():
+            if isinstance(value, (dict, list)):
+                result = extract_timestamp(value)
+                if result:
+                    return result
+    elif isinstance(data, list):
+        for item in data:
+            result = extract_timestamp(item)
             if result:
                 return result
 
     return None
 
-@app.route("/", methods=['GET'])
-def index():
+def job():
     global previous_timestamp
 
     # URL of the NSE India API
@@ -41,14 +51,11 @@ def index():
 
     # Check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Print the entire JSON response to inspect its structure
-        print("JSON Response:", response.json())
-
         # Parse the JSON content of the response
         data = response.json()
 
-        # Extract the timestamp using the new function
-        current_timestamp = find_timestamp(data)
+        # Extract the timestamp using a recursive approach
+        current_timestamp = extract_timestamp(data)
 
         if current_timestamp and current_timestamp != previous_timestamp:
             # Update the previous timestamp
@@ -57,14 +64,13 @@ def index():
             # Insert data into the database
             insert_data_into_database(data)
 
-        # Return the timestamp and data as a dictionary
-        data_to_render = {'timestamp': current_timestamp, 'filtered_data': data.get('filtered', {}).get('data', [])}
+# Schedule the job to run every 60 seconds
+scheduler.add_job(job, 'interval', seconds=60)
+scheduler.start()
 
-        # You can return the data to the template without saving it to a file
-        return render_template('index.html', data=data_to_render)
-    else:
-        # If the request was not successful, return an error message
-        return f"Error fetching data: {response.status_code}"
+@app.route("/", methods=['GET'])
+def index():
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)

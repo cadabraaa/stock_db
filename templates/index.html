@@ -8,80 +8,9 @@
     <!-- Include jQuery and DataTables CSS and JS -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+      <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 </head>
 <body>
-    <h1>NSE Data Visualization</h1>
-    <table id="nseDataTable" border="1">
-        <thead>
-            <tr>
-                <th>Timestamp</th>
-                <th>Type</th>
-                <th>Strike Price</th>
-                <th>Expiry Date</th>
-                <th>Underlying</th>
-                <th>Identifier</th>
-                <th>Open Interest</th>
-                <th>Change in Open Interest</th>
-                <th>Implied Volatility</th>
-                <th>Last Price</th>
-                <th>Change</th>
-                <th>Total Buy Quantity</th>
-                <th>Total Sell Quantity</th>
-                <th>Bid Qty</th>
-                <th>Bid Price</th>
-                <th>Ask Qty</th>
-                <th>Ask Price</th>
-                <th>Underlying Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for record in data.filtered_data %}
-                <tr>
-                    <td>{{ data.timestamp }}</td>
-                    <td>PE</td>
-                    <td>{{ record.strikePrice }}</td>
-                    <td>{{ record.expiryDate }}</td>
-                    <td>{{ record.PE.underlying if record.PE else '' }}</td>
-                    <td>{{ record.PE.identifier if record.PE else '' }}</td>
-                    <td>{{ record.PE.openInterest if record.PE else '' }}</td>
-                    <td>{{ record.PE.changeinOpenInterest if record.PE else '' }}</td>
-                    <td>{{ record.PE.impliedVolatility if record.PE else '' }}</td>
-                    <td>{{ record.PE.lastPrice if record.PE else '' }}</td>
-                    <td>{{ record.PE.change if record.PE else '' }}</td>
-                    <td>{{ record.PE.totalBuyQuantity if record.PE else '' }}</td>
-                    <td>{{ record.PE.totalSellQuantity if record.PE else '' }}</td>
-                    <td>{{ record.PE.bidQty if record.PE else '' }}</td>
-                    <td>{{ record.PE.bidprice if record.PE else '' }}</td>
-                    <td>{{ record.PE.askQty if record.PE else '' }}</td>
-                    <td>{{ record.PE.askPrice if record.PE else '' }}</td>
-                    <td>{{ record.PE.underlyingValue if record.PE else '' }}</td>
-                </tr>
-                {% if record.CE %}
-                    <!-- If there is a Call option (CE), add its data to the table -->
-                    <tr>
-                        <td>{{ data.timestamp }}</td>
-                        <td>CE</td>
-                        <td>{{ record.CE.strikePrice }}</td>
-                        <td>{{ record.CE.expiryDate }}</td>
-                        <td>{{ record.CE.underlying }}</td>
-                        <td>{{ record.CE.identifier }}</td>
-                        <td>{{ record.CE.openInterest }}</td>
-                        <td>{{ record.CE.changeinOpenInterest }}</td>
-                        <td>{{ record.CE.impliedVolatility }}</td>
-                        <td>{{ record.CE.lastPrice }}</td>
-                        <td>{{ record.CE.change }}</td>
-                        <td>{{ record.CE.totalBuyQuantity }}</td>
-                        <td>{{ record.CE.totalSellQuantity }}</td>
-                        <td>{{ record.CE.bidQty }}</td>
-                        <td>{{ record.CE.bidprice }}</td>
-                        <td>{{ record.CE.askQty }}</td>
-                        <td>{{ record.CE.askPrice }}</td>
-                        <td>{{ record.CE.underlyingValue }}</td>
-                    </tr>
-                {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
+    <h1>Data is getting saved in DB</h1>
 </body>
 </html>
