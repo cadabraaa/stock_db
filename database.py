@@ -1,6 +1,9 @@
 from sqlalchemy import create_engine, text
+import os
 
-engine = create_engine("mysql+pymysql://admin:cadabraa@nifty.czp1fr3ynvvj.ap-south-1.rds.amazonaws.com/stockdb")
+db_connection_string = os.environ['DB_CONNECTION_STRING']
+
+engine = create_engine(db_connection_string)
 
 def insert_data_into_database(data):
   """

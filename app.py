@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from apscheduler.schedulers.background import BackgroundScheduler
 import requests
 from database import insert_data_into_database
@@ -71,6 +71,7 @@ scheduler.start()
 @app.route("/", methods=['GET'])
 def index():
     return render_template("index.html")
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
