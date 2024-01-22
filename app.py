@@ -70,11 +70,10 @@ def job():
 
       # Insert data into the database
       insert_data_into_database(data)
-      
 
 
 # Schedule the job to run every 60 seconds
-scheduler.add_job(job, 'interval', seconds=5)
+scheduler.add_job(job, 'interval', seconds=60)
 scheduler.start()
 
 
