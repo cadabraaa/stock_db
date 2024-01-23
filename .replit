@@ -11,4 +11,4 @@ language = "python3"
 
 [deployment]
 run = ["sh", "-c", "python app.py"]
-deploymentTarget = "cloudrun"
+deploymentTarget = "gce"
