@@ -2,14 +2,14 @@ from sqlalchemy import create_engine, text
 import os
 import datetime
 
-db_connection_string = os.environ['DB_CONNECTION_STRING']
-engine = create_engine(db_connection_string)
+engine = create_engine("mysql+pymysql://admin:cadabraa@nifty.czp1fr3ynvvj.ap-south-1.rds.amazonaws.com/stockdb")
 
 def insert_data_into_database(data):
   
   # Create the transaction outside the loop
   with engine.connect() as conn:
     transaction = conn.begin()
+
 
     try:
       for record in data.get('filtered', {}).get('data', []):
@@ -44,6 +44,13 @@ def insert_data_into_database(data):
             'underlying_value':record.get('PE', {}).get('underlyingValue', '')
         }
 
+        # Execute the "PE" query
+        try:
+          conn.execute(query_pe, params_pe)
+          print("Insert PE successful!")
+        except Exception as e:
+          print(f"Error during PE insertion: {e}")
+
         # Insert "CE" record
         query_ce = text(
             "INSERT INTO stock_table (Dateandtime, Strike_Price, Calltype, Expiry_Date, Underlying, "
@@ -73,6 +80,13 @@ def insert_data_into_database(data):
             'ask_price':record.get('CE', {}).get('askPrice', ''),
             'underlying_value':record.get('CE', {}).get('underlyingValue', '')
         }
+
+        # Execute the "CE" query
+        try:
+          conn.execute(query_ce, params_ce)
+          print("Insert CE successful!")
+        except Exception as e:
+          print(f"Error during CE insertion: {e}")
 
       # Commit the transaction after the loop
       transaction.commit()
