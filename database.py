@@ -28,8 +28,8 @@ def insert_data_into_database(data):
 
         params_pe = {
             'dateandtime':record.get('PE', {}).get('timestamp', ''),
-            'strike_price':record.get('strikePrice'),
-            'expiry_date':record.get('expiryDate'),
+            'strike_price':record.get('PE', {}).get('strikePrice'),
+            'expiry_date':record.get('PE', {}).get('expiryDate'),
             'underlying':record.get('PE', {}).get('underlying', ''),
             'identifier':record.get('PE', {}).get('identifier', ''),
             'open_interest':record.get('PE', {}).get('openInterest', ''),
@@ -65,8 +65,8 @@ def insert_data_into_database(data):
 
         params_ce = {
             'dateandtime':record.get('CE', {}).get('timestamp', ''),
-            'strike_price':record.get('strikePrice'),
-            'expiry_date':record.get('expiryDate'),
+            'strike_price':record.get('CE', {}).get('strikePrice'),
+            'expiry_date':record.get('CE', {}).get('expiryDate'),
             'underlying':record.get('CE', {}).get('underlying', ''),
             'identifier':record.get('CE', {}).get('identifier', ''),
             'open_interest':record.get('CE', {}).get('openInterest', ''),

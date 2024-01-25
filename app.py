@@ -73,7 +73,7 @@ def job():
 
 
 # Schedule the job to run every 60 seconds
-scheduler.add_job(job, 'interval', seconds=60)
+scheduler.add_job(job, 'interval', seconds=15)
 scheduler.start()
 
 
